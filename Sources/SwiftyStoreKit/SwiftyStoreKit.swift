@@ -86,14 +86,12 @@ public class SwiftyStoreKit {
     }
 
     
+    @available(iOS 14.0, *)
     fileprivate func redeemOfferCode(atomically: Bool, completion: @escaping (CodeRedemptionResult) -> Void) {
+        paymentQueueController.presentCodeRedemptionSheet(CodeRedemption(atomically: atomically) { result in
 
-        if #available(iOS 14.0, *) {
-            paymentQueueController.presentCodeRedemptionSheet(CodeRedemption(atomically: atomically) { result in
-
-                completion(self.processCodeRedemptionResult(result))
-            })
-        }
+            completion(self.processCodeRedemptionResult(result))
+        })
     }
     
     fileprivate func onEntitlementRevocation(completion: @escaping ([String]) -> Void) {
@@ -224,6 +222,8 @@ extension SwiftyStoreKit {
     
     /// RedeemOfferCode
     ///  - Parameter atomically: whether the code is redeemed atomically (e.g. `finishTransaction` is called immediately)
+
+    @available(iOS 14.0, *)
     public class func redeemOfferCode(atomically: Bool = true, completion: @escaping (CodeRedemptionResult) -> Void) {
 
         sharedInstance.redeemOfferCode(atomically: atomically, completion: completion)
